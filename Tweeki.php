@@ -16,14 +16,14 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
- * 
+ *
  * @file
  * @ingroup Skins
  * @author Tobias Haider, Garrett LeSage
  */
 
 if( !defined( 'MEDIAWIKI' ) ) die( "This is an extension to the MediaWiki package and cannot be run standalone." );
- 
+
 $wgExtensionCredits['skin'][] = array(
 				'path' => __FILE__,
 				'name' => 'Tweeki',
@@ -38,7 +38,7 @@ $wgAutoloadClasses['SkinTweeki'] = dirname(__FILE__).'/Tweeki.skin.php';
 $wgAutoloadClasses['TweekiHooks'] = dirname( __FILE__ ) . '/Tweeki.hooks.php';
 $wgMessagesDirs['SkinTweeki'] = __DIR__ . '/i18n';
 $wgExtensionMessagesFiles['TweekiMagic'] = dirname( __FILE__ ) . '/Tweeki.i18n.magic.php';
- 
+
 $wgHooks['GetPreferences'][] = 'TweekiHooks::getPreferences';
 $wgHooks['ParserFirstCallInit'][] = 'TweekiHooks::ButtonsSetup';
 $wgHooks['ParserFirstCallInit'][] = 'TweekiHooks::LabelSetup';
@@ -149,11 +149,13 @@ $wgResourceModules['skins.tweeki.tooltips'] = array(
 
 $wgExtensionFunctions[] = 'efTweekiSkinSetup';
 
-function efTweekiSkinSetup() {
+function efTweekiSkinSetup()
+{
 	global $wgTweekiSkinCustomizedBootstrap, $wgResourceModules;
 
 	/* Load customized bootstrap files */
-	if( isset( $wgTweekiSkinCustomizedBootstrap ) && ! is_null( $wgTweekiSkinCustomizedBootstrap ) ) {
+	if( isset( $wgTweekiSkinCustomizedBootstrap ) && ! is_null( $wgTweekiSkinCustomizedBootstrap ) )
+       	{
 		$wgResourceModules['skins.tweeki.bootstrap.styles']['localBasePath'] = $wgTweekiSkinCustomizedBootstrap['localBasePath'];
 		$wgResourceModules['skins.tweeki.bootstrap.styles']['remoteExtPath'] = $wgTweekiSkinCustomizedBootstrap['remoteExtPath'];
 		unset( $wgResourceModules['skins.tweeki.bootstrap.styles']['remoteSkinPath'] );
@@ -174,16 +176,16 @@ function efTweekiSkinSetup() {
  */
 
 /**
- * This variable can be used to hide elements from everybody. 
- * The {{#tweekihide}} parser function will add to this array. 
- * Attention: For the parser function only hiding of elements 
- * that are also listed in $wgTweekiSkinHideable will actually 
+ * This variable can be used to hide elements from everybody.
+ * The {{#tweekihide}} parser function will add to this array.
+ * Attention: For the parser function only hiding of elements
+ * that are also listed in $wgTweekiSkinHideable will actually
  * be put into effect.
  */
 $wgTweekiSkinHideAll = array( 'footer-info' );
 
 /**
- * In order to prevent abuse, only elements listed in this array 
+ * In order to prevent abuse, only elements listed in this array
  * are allowed to be hidden by the {{#tweekihide}} parser function.
  */
 $wgTweekiSkinHideable = array( 'firstHeading' );
@@ -199,7 +201,7 @@ $wgTweekiSkinHideAnon = array( 'subnav', 'PERSONAL', 'TOOLBOX' );
 $wgTweekiSkinHideLoggedin = array( 'footer-custom' );
 
 /**
- * Elements in this array will only be shown to users who have chosen 
+ * Elements in this array will only be shown to users who have chosen
  * in their preferences to show "advanced features".
  */
 $wgTweekiSkinHideNonAdvanced = array( 'EDIT-EXT-special' );
@@ -210,26 +212,26 @@ $wgTweekiSkinHideNonAdvanced = array( 'EDIT-EXT-special' );
 $wgTweekiSkinFooterIcons = false;
 
 /**
- * Use this variable to change the default page layout. Replace the value 
- * with the name of a custom function - use TweekiTemplate::renderPage() 
+ * Use this variable to change the default page layout. Replace the value
+ * with the name of a custom function - use TweekiTemplate::renderPage()
  * in Tweeki.skin.php as a template to build your own layout.
  */
 $wgTweekiSkinPageRenderer = 'self::renderPage';
 
 /**
- * Add to this array to create customized buttons, the array's key is 
- * the keyword for the navigational element to be used in navbars, subnav, 
- * sidebar, or footer, the value is the name of a callback function. This 
- * function will be called with the skin object as argument and should 
- * return either an array of buttons or a string that can be parsed as buttons. 
+ * Add to this array to create customized buttons, the array's key is
+ * the keyword for the navigational element to be used in navbars, subnav,
+ * sidebar, or footer, the value is the name of a callback function. This
+ * function will be called with the skin object as argument and should
+ * return either an array of buttons or a string that can be parsed as buttons.
  */
 $wgTweekiSkinNavigationalElements = array();
 
-/** 
- * Use this array to add completely arbitrary code into navbars, subnav, sidebar, 
- * or footer. The value again is a callback function you need to create. It will 
- * be called with two arguments, the skin object and the context as a string 
- * (navbar-left, navbar-right, subnav, sidebar, footer). The function should 
+/**
+ * Use this array to add completely arbitrary code into navbars, subnav, sidebar,
+ * or footer. The value again is a callback function you need to create. It will
+ * be called with two arguments, the skin object and the context as a string
+ * (navbar-left, navbar-right, subnav, sidebar, footer). The function should
  * directly print the html you want to have.
  */
 $wgTweekiSkinSpecialElements = array(
@@ -247,20 +249,20 @@ $wgTweekiSkinSpecialElements = array(
  * skins.tweeki.styles - basic styling
  * skins.tweeki.corrections.styles - corrections
  */
-$wgTweekiSkinStyles = array( 
-	'skins.tweeki.bootstrap.styles', 
+$wgTweekiSkinStyles = array(
+	'skins.tweeki.bootstrap.styles',
 	'skins.tweeki.styles',
 	'skins.tweeki.corrections.styles',
 	'skins.tweeki.externallinks.styles'
-); 
+);
 
-/** 
+/**
  * Whether or not to include Font Awesome to allow the use of its icons.
  */
 $wgTweekiSkinUseAwesome = true;
 
 /**
- * Whether or not to include the code for Bootstrap's theme (enhanced styling 
+ * Whether or not to include the code for Bootstrap's theme (enhanced styling
  * for buttons etc.).
  */
 $wgTweekiSkinUseBootstrapTheme = true;

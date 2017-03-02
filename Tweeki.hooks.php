@@ -16,15 +16,16 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
- * 
+ *
  * @file
  * @ingroup Skins
  */
 
-class TweekiHooks {
+class TweekiHooks
+{
 
 	protected static $anchorID = 0;
-	
+
 	/* Static Methods */
 
 	/**
@@ -35,8 +36,10 @@ class TweekiHooks {
 	 * @param $user User current user
 	 * @param $defaultPreferences array list of default user preference controls
 	 */
-	public static function getPreferences( $user, &$defaultPreferences ) {
-		$defaultPreferences['tweeki-advanced'] = array(
+	public static function getPreferences( $user, &$defaultPreferences )
+       	{
+		$defaultPreferences['tweeki-advanced'] = array
+		(
 			'type' => 'toggle',
 			'label-message' => 'prefs-tweeki-advanced-desc',
 			'section' => 'rendering/tweeki-advanced',
@@ -50,7 +53,8 @@ class TweekiHooks {
 	 *
 	 * @param $parser Parser current parser
 	 */
-	static function TweekiHideSetup( Parser $parser ) {
+	static function TweekiHideSetup( Parser $parser )
+       	{
 		$parser->setFunctionHook( 'tweekihide', 'TweekiHooks::setHiddenElements' );
 		return true;
 	}
@@ -61,12 +65,15 @@ class TweekiHooks {
 	 * @param $parser Parser current parser
 	 * @return string
 	 */
-	static function setHiddenElements( Parser $parser ) {
+	static function setHiddenElements( Parser $parser )
+       	{
 		global $wgTweekiSkinHideAll, $wgTweekiSkinHideable;
 		$parser->disableCache();
 		// Argument 0 is $parser, so begin iterating at 1
-		for ( $i = 1; $i < func_num_args(); $i++ ) {
-			if ( in_array ( func_get_arg( $i ), $wgTweekiSkinHideable ) ) {
+		for ( $i = 1; $i < func_num_args(); $i++ )
+	       	{
+			if ( in_array ( func_get_arg( $i ), $wgTweekiSkinHideable ) )
+		       	{
 				$wgTweekiSkinHideAll[] = func_get_arg( $i );
 			}
 		}
@@ -78,7 +85,8 @@ class TweekiHooks {
 	 *
 	 * @param $parser Parser current parser
 	 */
-	static function AccordionSetup( Parser $parser ) {
+	static function AccordionSetup( Parser $parser )
+       	{
 		$parser->setHook( 'accordion', 'TweekiHooks::buildAccordion' );
 		return true;
 	}
@@ -92,7 +100,8 @@ class TweekiHooks {
 	 * @param $frame PPFrame current frame
 	 * @return string
 	 */
-	static function buildAccordion( $input, array $args, Parser $parser, PPFrame $frame ) {
+	static function buildAccordion( $input, array $args, Parser $parser, PPFrame $frame )
+       	{
 		static::$anchorID++;
 		$parent = $parser->recursiveTagParse( $args['parent'], $frame );
 		$panel = '
@@ -118,11 +127,12 @@ class TweekiHooks {
 	 *
 	 * @param $parser Parser current parser
 	 */
-	static function LabelSetup( Parser $parser ) {
+	static function LabelSetup( Parser $parser )
+	{
 		$parser->setHook( 'label', 'TweekiHooks::buildLabel' );
 		return true;
 	}
-	
+
 	/**
 	 * Build label
 	 * @param $input string
@@ -131,7 +141,8 @@ class TweekiHooks {
 	 * @param $frame PPFrame current frame
 	 * @return string
 	 */
-	static function buildLabel( $input, array $args, Parser $parser, PPFrame $frame ) {
+	static function buildLabel( $input, array $args, Parser $parser, PPFrame $frame )
+       	{
 		return '<label>' . $parser->recursiveTagParse( $input ) . '</label>';
 	}
 
@@ -140,15 +151,17 @@ class TweekiHooks {
 	 *
 	 * @param $parser Parser current parser
 	 */
-	static function ButtonsSetup( Parser $parser ) {
+	static function ButtonsSetup( Parser $parser )
+       	{
 		global $wgTweekiSkinUseBtnParser;
-		
-		if ( true === $wgTweekiSkinUseBtnParser ) {
+
+		if ( true === $wgTweekiSkinUseBtnParser )
+	       	{
 			$parser->setHook( 'btn', 'TweekiHooks::buildButtons' );
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Build buttons, groups of buttons and dropdowns
 	 *
@@ -158,40 +171,49 @@ class TweekiHooks {
 	 * @param $frame PPFrame current frame
 	 * @return string
 	 */
-	static function buildButtons( $input, array $args, Parser $parser, PPFrame $frame ) {
-		$sizes = array(
+	static function buildButtons( $input, array $args, Parser $parser, PPFrame $frame )
+       	{
+		$sizes = array
+		(
 			'large' => 'btn-lg',
 			'lg' => 'btn-lg',
 			'small' => 'btn-sm',
 			'sm' => 'btn-sm',
 			'mini' => 'btn-xs',
 			'xs' => 'btn-xs'
-			);
+		);
 		$renderedButtons = '';
 
 		$buttongroups = preg_split( '/\n{2,}/', $input );
 
 		// set standard classes for all buttons in the group
-		if ( !isset( $args['class'] ) ) {
+		if ( !isset( $args['class'] ) )
+		{
 			$args['class'][] = 'btn btn-default';
 		}
-		else {
+		else
+	       	{
 			$args['class'] = explode( ' ', $args['class'] );
 		}
-		if ( isset( $args['size'] ) ) {
-			if ( isset( $sizes[$args['size']] ) ) {
+
+		if ( isset( $args['size'] ) )
+	       	{
+			if ( isset( $sizes[$args['size']] ) )
+		       	{
 				$args['class'][] = $sizes[$args['size']];
 			}
 		}
 
-		foreach ( $buttongroups as $buttongroup ) {
+		foreach ( $buttongroups as $buttongroup )
+	       	{
 			$buttons = array();
 			$buttons = TweekiHooks::parseButtons( $buttongroup, $parser, $frame );
 			$renderedButtons .= TweekiHooks::renderButtons( $buttons, $args );
 		}
 
 		// more than one buttongroup build a toolbar
-		if ( count( $buttongroups ) > 1 ) {
+		if ( count( $buttongroups ) > 1 )
+		{
 			$renderedButtons = '<div class="btn-toolbar">' . $renderedButtons . '</div>';
 		}
 
@@ -207,33 +229,39 @@ class TweekiHooks {
 	 * @param $frame PPFrame current frame
 	 * @return array
 	 */
-	static function parseButtons( $buttongroup, Parser $parser, $frame ) {
+	static function parseButtons( $buttongroup, Parser $parser, $frame )
+       	{
 		$buttons = array();
 		$lines = explode( "\n", $buttongroup );
 
-		foreach ( $lines as $line ) {
+		foreach ( $lines as $line )
+	       	{
 			// empty line
-			if ( trim( $line ) == "" ) { 
+			if ( trim( $line ) == "" )
+		       	{
 				continue;
 			}
-			
+
 			// simple buttons
-			if ( strpos( $line, '*' ) !== 0 ) {
+			if ( strpos( $line, '*' ) !== 0 )
+		       	{
 				$buttons = array_merge( $buttons, TweekiHooks::parseButtonLink( trim( $line ), $parser, $frame ) );
 				end( $buttons );
 				$currentparentkey = key($buttons);
 			}
-				
 			// dropdown menus
-			else {
+			else
+		       	{
 				// no parent set?
-				if ( count( $buttons ) == 0 ) {
+				if ( count( $buttons ) == 0 )
+			       	{
 					continue;
 				}
-				
+
 				$cleanline = ltrim( $line, '*' );
 				$cleanline = trim( $cleanline );
-				if ( !isset( $buttons[$currentparentkey]['items'] ) ) {
+				if ( !isset( $buttons[$currentparentkey]['items'] ) )
+			       	{
 					$buttons[$currentparentkey]['items'] = array();
 				}
 				$buttons[$currentparentkey]['items'] = array_merge( $buttons[$currentparentkey]['items'], TweekiHooks::parseButtonLink( $cleanline, $parser, $frame ) );
@@ -251,111 +279,141 @@ class TweekiHooks {
 	 * @param $frame Frame current frame
 	 * @return array
 	 */
-	static function parseButtonLink( $line, $parser, $frame ) {
+	static function parseButtonLink( $line, $parser, $frame )
+       	{
 
 		$extraAttribs = array();
 		$href_implicit = false;
 		$active = false;
-				
+
 		// semantic queries
-		if ( strpos( $line, '{{#ask:' ) === 0 ) {
-			if ( $parser->getTitle() instanceof Title ) {
+		if ( strpos( $line, '{{#ask:' ) === 0 )
+	       	{
+			if ( $parser->getTitle() instanceof Title )
+		       	{
 				$semanticQuery = substr( $line, 7, -2 );
 				$semanticHitNumber = $parser->recursiveTagParse( '{{#ask:' . $semanticQuery . '|format=count}}', false );
-				if ( !is_numeric( $semanticHitNumber ) || $semanticHitNumber < 1 ) {
+				if ( !is_numeric( $semanticHitNumber ) || $semanticHitNumber < 1 )
+			       	{
 					return array( array( 'text' => $semanticQuery, 'href' => 'INVALID QUERY' ) );
 				}
 				$semanticHits = $parser->recursiveTagParse( '{{#ask:' . $semanticQuery . '|format=list|link=none}}', false );
 				$semanticHits = explode( ',', $semanticHits );
 				$semanticLinks = array();
-				foreach ( $semanticHits as $semanticHit ) {
+				foreach ( $semanticHits as $semanticHit )
+			       	{
 					$semanticLink = TweekiHooks::parseButtonLink( $semanticHit, $parser, $frame );
 					$semanticLinks[] = $semanticLink[0];
 				}
 				return $semanticLinks;
 			}
-			else {
+			else
+		       	{
 				$text = 'broken';
 			}
 		}
 
 		$line = explode( '|', $line );
-		foreach ( $line as &$single_line ) {
+		foreach ( $line as &$single_line )
+	       	{
 			$single_line = trim( $single_line );
 		}
 
 		// is the text explicitly set?
 		$href = $line[0];
-		if ( isset( $line[1] ) && $line[1] != "" ) {
+		if ( isset( $line[1] ) && $line[1] != "" )
+	       	{
 			$text = $line[1];
 		}
-		else {
+		else
+	       	{
 			$href_implicit = true;
 			$text = $line[0];
 		}
 
 		// parse text
 		$msgText = wfMessage( $text )->inContentLanguage();
-		if ( $msgText->exists() ) {
+		if ( $msgText->exists() )
+	       	{
 			$text = $msgText->parse();
 		}
-		else {
-			if ( $parser->getTitle() instanceof Title ) {
+		else
+	       	{
+			if ( $parser->getTitle() instanceof Title )
+		       	{
 				$text = $parser->recursiveTagParse( $text, $frame );
 			}
-			else {
+			else
+		       	{
 				$text = 'INVALID-TITLE/PARSER-BROKEN';
 			}
 		}
 
 		// parse href
 		$msgLink = wfMessage( $href )->inContentLanguage();
-		if ( $msgLink->exists() ) {
+		if ( $msgLink->exists() )
+	       	{
 			$href = $msgLink->parse();
 		}
-		else {
-			if ( $parser->getTitle() instanceof Title ) {
+		else
+	       	{
+			if ( $parser->getTitle() instanceof Title )
+		       	{
 				$href = $parser->replaceVariables( $href, $frame );
 			}
-			else {
+			else
+		       	{
 				$href = 'INVALID-HREF/PARSER-BROKEN';
 			}
 		}
 
-		if ( preg_match( '/^(?i:' . wfUrlProtocols() . ')/', $href ) ) {
+		if ( preg_match( '/^(?i:' . wfUrlProtocols() . ')/', $href ) )
+	       	{
 			// Parser::getExternalLinkAttribs won't work here because of the Namespace things
 			global $wgNoFollowLinks, $wgNoFollowDomainExceptions;
-			if ( $wgNoFollowLinks && !wfMatchesDomainList( $href, $wgNoFollowDomainExceptions ) ) {
+			if ( $wgNoFollowLinks && !wfMatchesDomainList( $href, $wgNoFollowDomainExceptions ) )
+		       	{
 				$extraAttribs['rel'] = 'nofollow';
 			}
 
 			global $wgExternalLinkTarget;
-			if ( $wgExternalLinkTarget ) {
+			if ( $wgExternalLinkTarget )
+		       	{
 				$extraAttribs['target'] = $wgExternalLinkTarget;
 			}
-		} else {
+		}
+		else
+	       	{
 			$title = Title::newFromText( $href );
-			if ( $title ) {
-				if( $title->equals( $parser->getTitle() ) ) {
+			if ( $title )
+		       	{
+				if( $title->equals( $parser->getTitle() ) )
+			       	{
 					$active = true;
 				}
 				$title = $title->fixSpecialName();
 				$href = $title->getLinkURL();
-			} else {
+			}
+			else
+		       	{
 				$href = 'INVALID-TITLE:' . $href;
 			}
 		}
-		if ( isset( $line[2] ) && $line[2] != "" ) {
+
+		if ( isset( $line[2] ) && $line[2] != "" )
+	       	{
 			$extraAttribs['class'] = $line[2];
 		}
 
-		$link = array_merge( array(
+		$link = array_merge(
+			array(
 				'html' => $text,
 				'href' => $href,
 				'href_implicit' => $href_implicit,
 				'id' => 'n-' . Sanitizer::escapeId( strtr( $line[0], ' ', '-' ), 'noninitial' ),
 				'active' => $active
-			), $extraAttribs );
+			),
+		       	$extraAttribs );
 		return array( $link );
 	}
 
@@ -366,11 +424,14 @@ class TweekiHooks {
 	 * @param $options Array
 	 * @return String
 	 */
-	static function renderButtons( $buttons, $options = array() ) {
+	static function renderButtons( $buttons, $options = array() )
+       	{
 		$renderedButtons = '';
 		$groupclass = array();
-		if ( isset( $options['class'] ) ) {
-			if ( !is_array( $options['class'] ) ) {
+		if ( isset( $options['class'] ) )
+	       	{
+			if ( !is_array( $options['class'] ) )
+		       	{
 				$options['class'] = explode( ' ', $options['class'] );
 			}
 			$groupclass = $options['class'];
@@ -379,36 +440,46 @@ class TweekiHooks {
 
 		// set wrapper
 		$wrapper = 'div';
-		if ( isset( $options['wrapper'] ) ) { 
+		if ( isset( $options['wrapper'] ) )
+	       	{
 			$wrapper = $options['wrapper'];
 		}
 
-		foreach ( $buttons as $button ) {
+		foreach ( $buttons as $button )
+	       	{
 			$btnoptions = array();
 			// set classes for specific button
 			// explicit classes for the specific line?
-			if ( isset( $button['class'] ) ) {
+			if ( isset( $button['class'] ) )
+		       	{
 				$button['class'] = explode( ' ', $button['class'] );
 			}
-			else {
+			else
+		       	{
 				$button['class'] = $groupclass;
 			}
-			foreach ( $button['class'] as $btnclass ) {
-				if ( strpos( $btnclass, 'btn' ) === 0 ) {
+			foreach ( $button['class'] as $btnclass )
+		       	{
+				if ( strpos( $btnclass, 'btn' ) === 0 )
+			       	{
 					$button['class'][] = 'btn';
 					break;
 				}
 			}
 
 			// set wrapper class
-			if ( isset( $options['wrapperclass'] ) ) {
+			if ( isset( $options['wrapperclass'] ) )
+		       	{
 				$wrapperclass = $options['wrapperclass'];
 			}
-			else {
-				if ( in_array( 'btn', $button['class'] ) === false ) {
+			else
+		       	{
+				if ( in_array( 'btn', $button['class'] ) === false )
+			       	{
 					$wrapperclass = 'dropdown';
 				}
-				else {
+				else
+			       	{
 					$wrapperclass = 'btn-group';
 				}
 			}
@@ -416,100 +487,127 @@ class TweekiHooks {
 			$button['class'] = implode( ' ', array_unique( $button['class'] ) );
 
 			// if aria-attributes are set, add them
-			if ( isset( $options['aria-controls'] ) ) {
+			if ( isset( $options['aria-controls'] ) )
+		       	{
 				$button['aria-controls'] = $options['aria-controls'];
 			}
-				
-			if ( isset( $options['aria-expanded'] ) ) {
+
+			if ( isset( $options['aria-expanded'] ) )
+		       	{
 				$button['aria-expanded'] = $options['aria-expanded'];
 			}
-				
+
 			// if data-target attribute is set, add it
-			if ( isset( $options['data-target'] ) ) {
+			if ( isset( $options['data-target'] ) )
+		       	{
 				$button['data-target'] = $options['data-target'];
 			}
-				
+
 			// if data-dismiss attribute is set, add it
-			if ( isset( $options['data-dismiss'] ) ) {
+			if ( isset( $options['data-dismiss'] ) )
+		       	{
 				$button['data-dismiss'] = $options['data-dismiss'];
 			}
-				
+
 			// if data-placement attribute is set, add it
-			if ( isset( $options['data-placement'] ) ) {
+			if ( isset( $options['data-placement'] ) )
+		       	{
 				$button['data-placement'] = $options['data-placement'];
 			}
-				
+
 			// if title attribute is set, add it
-			if ( isset( $options['title'] ) ) {
+			if ( isset( $options['title'] ) )
+		       	{
 				$button['title'] = $options['title'];
 			}
-				
+
 			// if data-toggle attribute is set, unset wrapper and add attribute and toggle-class
-			if ( isset( $options['data-toggle'] ) ) {
+			if ( isset( $options['data-toggle'] ) )
+		       	{
 				$wrapper = '';
 				$button['data-toggle'] = $options['data-toggle'];
 				$button['class'] .= ' ' . $options['data-toggle'] . '-toggle';
 			}
-			
+
 			// if html is not set, use text and sanitize it
-			if ( !isset( $button['html'] ) ) {
-				if( isset( $button['text'] ) ) {
+			if ( !isset( $button['html'] ) )
+		       	{
+				if( isset( $button['text'] ) )
+			       	{
 					$button['html'] = htmlspecialchars( $button['text'] );
 				}
-				else {
+				else
+			       	{
 					$button['html'] = '#';
 				}
 			}
-			
+
 			// if fa attribute is set, add fa-icon to buttons
-			if ( isset( $options['fa'] ) ) {
+			if ( isset( $options['fa'] ) )
+		       	{
 				$button['html'] = '<span class="fa fa-' . $options['fa'] . '"></span> ' . $button['html'];
 			}
 
 			// if glyphicon or icon attribute is set, add icon to buttons
-			if ( isset( $options['icon'] ) ) {
+			if ( isset( $options['icon'] ) )
+		       	{
 				$options['glyphicon'] = $options['icon'];
 			}
-			if ( isset( $options['glyphicon'] ) ) {
+
+			if ( isset( $options['glyphicon'] ) )
+		       	{
 				$button['html'] = '<span class="glyphicon glyphicon-' . $options['glyphicon'] . '"></span> ' . $button['html'];
 			}
 
 			// render wrapper
-			if ( 
-				( ( $currentwrapperclass != $wrapperclass || isset( $button['items'] ) ) && $wrapper != '' ) 
-				|| $wrapper == 'li' 
-			) {
-				if ( $currentwrapperclass != '' ) {
+			if (
+				( ( $currentwrapperclass != $wrapperclass || isset( $button['items'] ) ) && $wrapper != '' )
+				|| $wrapper == 'li'
+			)
+		       	{
+				if ( $currentwrapperclass != '' )
+			       	{
 					$renderedButtons .= '</' . $wrapper . '>';
 				}
+
 				$renderedButtons .= '<' . $wrapper . ' class="' . $wrapperclass;
-				if ( isset( $button['active'] ) && $button['active'] === true ) {
+
+				if ( isset( $button['active'] ) && $button['active'] === true )
+			       	{
 					$renderedButtons .= ' active';
 				}
-				if ( isset( $options['wrapperid'] ) ) {
+
+				if ( isset( $options['wrapperid'] ) )
+			       	{
 					$renderedButtons .= '" id="' . $options['wrapperid'];
 				}
+
 				$renderedButtons .= '">';
 				$currentwrapperclass = $wrapperclass;
 			}
 
 			// dropdown
-			if ( isset( $button['items'] ) ) {
-				if ( isset( $options['dropdownclass'] ) ) {
+			if ( isset( $button['items'] ) )
+		       	{
+				if ( isset( $options['dropdownclass'] ) )
+			       	{
 					$renderedButtons .= TweekiHooks::buildDropdown( $button, $options['dropdownclass'] );
 				}
-				else {
+				else
+			       	{
 					$renderedButtons .= TweekiHooks::buildDropdown( $button );
 				}
 			}
-
 			// simple button
-			else {
+			else
+		       	{
 				$renderedButtons .= TweekiHooks::makeLink( $button, $btnoptions );
 			}
 		}
+
 		// close wrapper
-		if ( $wrapper != '' ) {
+		if ( $wrapper != '' )
+	       	{
 			$renderedButtons .= '</' . $wrapper . '>';
 		}
 		return $renderedButtons;
@@ -522,11 +620,13 @@ class TweekiHooks {
 	 * @param $dropdown array
 	 * @return String
 	 */
-	static function buildDropdown( $dropdown, $dropdownclass = '' ) {
+	static function buildDropdown( $dropdown, $dropdownclass = '' )
+       	{
 		$renderedDropdown = '';
 
 		// split dropdown
-		if ( isset( $dropdown['href_implicit'] ) && $dropdown['href_implicit'] === false ) {
+		if ( isset( $dropdown['href_implicit'] ) && $dropdown['href_implicit'] === false )
+	       	{
 			$renderedDropdown .= TweekiHooks::makeLink( $dropdown );
 			$caret = array(
 				'class' => 'dropdown-toggle ' . $dropdown['class'],
@@ -536,9 +636,9 @@ class TweekiHooks {
 				);
 			$renderedDropdown .= TweekiHooks::makeLink( $caret );
 		}
-
 		// ordinary dropdown
-		else {
+		else
+	       	{
 			$dropdown['class'] .= ' dropdown-toggle';
 			$dropdown['data-toggle'] = 'dropdown';
 			$dropdown['html'] = $dropdown['html'] . ' <b class="caret"></b>';
@@ -557,19 +657,22 @@ class TweekiHooks {
 	 * @param $dropdownmenu array
 	 * @return String
 	 */
-	static function buildDropdownMenu( $dropdownmenu, $dropdownclass ) {
+	static function buildDropdownMenu( $dropdownmenu, $dropdownclass )
+       	{
 		$renderedMenu = '<ul class="dropdown-menu ' . $dropdownclass . '" role="menu">';
 
-		foreach ( $dropdownmenu as $entry ) {
+		foreach ( $dropdownmenu as $entry )
+	       	{
 			// divider
 			if ( ( !isset( $entry['text'] ) || $entry['text'] == "" ) // no 'text'
 				&& ( !isset( $entry['html'] ) || $entry['html'] == "" ) // and no 'html'
-			) {
+			)
+		       	{
 				$renderedMenu .= '<li class="divider" />';
 			}
-
 			// standard menu entry
-			else {
+			else
+		       	{
 				$entry['tabindex'] = '-1';
 				$renderedMenu .= TweekiHooks::makeListItem( $entry );
 			}
@@ -582,7 +685,7 @@ class TweekiHooks {
 
 	/**
 	 * Produce HTML for a link
-	 * 
+	 *
 	 * This is a slightly adapted copy of the makeLink function in SkinTemplate.php
 	 * -> some of the changed parts are marked by comments //
 	 *
@@ -593,15 +696,20 @@ class TweekiHooks {
 	 * this function should be adapted accordingly or it will likely produce further
 	 * misbehavior in the future (see github issue #68)
 	 */
-	static function makeLink( $item, $options = array() ) {
+	static function makeLink( $item, $options = array() )
+       	{
 		// nested links?
-		if ( isset( $item['links'] ) ) {
+		if ( isset( $item['links'] ) )
+	       	{
 			$item = $item['links'][0];
 		}
 
-		if ( isset( $item['text'] ) ) {
+		if ( isset( $item['text'] ) )
+	       	{
 			$text = $item['text'];
-		} else {
+		}
+		else
+	       	{
 //			$text = $this->translator->translate( isset( $item['msg'] ) ? $item['msg'] : $key );
 			$text = '';
 		}
@@ -609,56 +717,79 @@ class TweekiHooks {
 		$html = htmlspecialchars( $text );
 
 		// set raw html
-		if ( isset( $item['html'] )) {
+		if ( isset( $item['html'] ))
+	       	{
 			$html = $item['html'];
 		}
 
 		// set icons for individual buttons (used by some navigational elements)
-		if ( isset( $item['icon'] )) {
+		if ( isset( $item['icon'] ))
+	       	{
 			$html = '<span class="glyphicon glyphicon-' . $item['icon'] . '"></span> ' . $html;
 		}
 
-		if ( isset( $options['text-wrapper'] ) ) {
+		if ( isset( $options['text-wrapper'] ) )
+	       	{
 			$wrapper = $options['text-wrapper'];
-			if ( isset( $wrapper['tag'] ) ) {
+			if ( isset( $wrapper['tag'] ) )
+		       	{
 				$wrapper = array( $wrapper );
 			}
-			while ( count( $wrapper ) > 0 ) {
+
+			while ( count( $wrapper ) > 0 )
+		       	{
 				$element = array_pop( $wrapper );
 				$html = Html::rawElement( $element['tag'], isset( $element['attributes'] ) ? $element['attributes'] : null, $html );
 			}
 		}
 
-		if ( isset( $item['href'] ) || isset( $options['link-fallback'] ) ) {
+		if ( isset( $item['href'] ) || isset( $options['link-fallback'] ) )
+	       	{
 			$attrs = $item;
 //			foreach ( array( 'single-id', 'text', 'msg', 'tooltiponly' ) as $k ) {
-			foreach ( array( 'single-id', 'text', 'msg', 'tooltiponly', 'href_implicit', 'items', 'icon', 'html', 'tooltip-params' ) as $k ) {
+			foreach ( array( 'single-id', 'text', 'msg', 'tooltiponly', 'href_implicit', 'items', 'icon', 'html', 'tooltip-params' ) as $k )
+		       	{
 				unset( $attrs[$k] );
 			}
 
-			if ( isset( $item['id'] ) && !isset( $item['single-id'] ) ) {
+			if ( isset( $item['id'] ) && !isset( $item['single-id'] ) )
+		       	{
 				$item['single-id'] = $item['id'];
 			}
-			if ( isset( $item['single-id'] ) ) {
-				if ( isset( $item['tooltiponly'] ) && $item['tooltiponly'] ) {
+
+			if ( isset( $item['single-id'] ) )
+		       	{
+				if ( isset( $item['tooltiponly'] ) && $item['tooltiponly'] )
+			       	{
 					$title = Linker::titleAttrib( $item['single-id'] );
-					if ( $title !== false ) {
+					if ( $title !== false )
+				       	{
 						$attrs['title'] = $title;
 					}
-				} else {
+				}
+				else
+			       	{
 					$tip = Linker::tooltipAndAccesskeyAttribs( $item['single-id'] );
-					if ( isset( $tip['title'] ) && $tip['title'] !== false ) {
+					if ( isset( $tip['title'] ) && $tip['title'] !== false )
+				       	{
 						$attrs['title'] = $tip['title'];
 					}
-					if ( isset( $tip['accesskey'] ) && $tip['accesskey'] !== false ) {
+
+					if ( isset( $tip['accesskey'] ) && $tip['accesskey'] !== false )
+				       	{
 						$attrs['accesskey'] = $tip['accesskey'];
 					}
 				}
 			}
-			if ( isset( $options['link-class'] ) ) {
-				if ( isset( $attrs['class'] ) ) {
+
+			if ( isset( $options['link-class'] ) )
+		       	{
+				if ( isset( $attrs['class'] ) )
+			       	{
 					$attrs['class'] .= " {$options['link-class']}";
-				} else {
+				}
+				else
+			       	{
 					$attrs['class'] = $options['link-class'];
 				}
 			}
@@ -670,26 +801,34 @@ class TweekiHooks {
 
 	/**
 	 * Produce HTML for a list item
-	 * 
+	 *
 	 * This is a slightly adapted copy of the makeListItem function in SkinTemplate.php
 	 * -> some of the changed parts are marked by comments //
 	 *
 	 * @param $item array
 	 * @param $options array
 	 */
-	static function makeListItem( $item, $options = array() ) {
-		if ( isset( $item['links'] ) ) {
+	static function makeListItem( $item, $options = array() )
+       	{
+		if ( isset( $item['links'] ) )
+	       	{
 			$html = '';
-			foreach ( $item['links'] as $linkKey => $link ) {
+			foreach ( $item['links'] as $linkKey => $link )
+		       	{
 				$html .= TweekiHooks::makeLink( $link, $options );
 			}
-		} else {
+		}
+		else
+	       	{
 			$link = $item;
 			// These keys are used by makeListItem and shouldn't be passed on to the link
-			foreach ( array( 'id', 'class', 'active', 'tag' ) as $k ) {
+			foreach ( array( 'id', 'class', 'active', 'tag' ) as $k )
+		       	{
 				unset( $link[$k] );
 			}
-			if ( isset( $item['id'] ) && !isset( $item['single-id'] ) ) {
+
+			if ( isset( $item['id'] ) && !isset( $item['single-id'] ) )
+		       	{
 				// The id goes on the <li> not on the <a> for single links
 				// but makeSidebarLink still needs to know what id to use when
 				// generating tooltips and accesskeys.
@@ -699,13 +838,18 @@ class TweekiHooks {
 		}
 
 		$attrs = array();
-		foreach ( array( 'id', 'class' ) as $attr ) {
-			if ( isset( $item[$attr] ) ) {
+		foreach ( array( 'id', 'class' ) as $attr )
+	       	{
+			if ( isset( $item[$attr] ) )
+		       	{
 				$attrs[$attr] = $item[$attr];
 			}
 		}
-		if ( isset( $item['active'] ) && $item['active'] ) {
-			if ( !isset( $attrs['class'] ) ) {
+
+		if ( isset( $item['active'] ) && $item['active'] )
+	       	{
+			if ( !isset( $attrs['class'] ) )
+		       	{
 				$attrs['class'] = '';
 			}
 			$attrs['class'] .= ' active';
@@ -726,18 +870,22 @@ class TweekiHooks {
 	 */
 	 // TODO: this is an ugly hack, that might be easily broken by small structural changes in core - make it bulletproof
 	 // TODO: make this work with VisualEditor
-	static function EditSectionLinkButton( $skin, $nt, $section, $tooltip, &$result, $lang = false ) {
-		$search = array( 
-			wfMessage( 'editsection' )->inLanguage( $lang )->text() . '</a>', 
+	static function EditSectionLinkButton( $skin, $nt, $section, $tooltip, &$result, $lang = false )
+       	{
+		$search = array(
+			wfMessage( 'editsection' )->inLanguage( $lang )->text() . '</a>',
 			'<a'
 		);
+
 		$icon = wfMessage( 'tweeki-editsection-icon' )->inLanguage( $lang )->parse();
 		$text = wfMessage( 'tweeki-editsection-text' )->inLanguage( $lang )->parse();
 		$class = wfMessage( 'tweeki-editsection-class' )->inLanguage( $lang )->parse();
-		$replace = array( 
-			$icon . ( ( $icon != '' ) ? ' ' : '' ) . $text . '</a>', 
+
+		$replace = array(
+			$icon . ( ( $icon != '' ) ? ' ' : '' ) . $text . '</a>',
 			'<a class="' . $class . '"'
 		);
+
 		$result = str_replace( $search, $replace, $result );
 	}
 
@@ -750,7 +898,8 @@ class TweekiHooks {
 	 * @param $parser Parser current parser
 	 * @param $text
 	 */
-	public static function HeadlineFix( &$parser, &$text ) {
+	public static function HeadlineFix( &$parser, &$text )
+       	{
 		$search = '/(<span class="mw-headline" id=".*">)(.*)(<\/span>)/';
 		$replace = '$1$3$2';
 		$text = preg_replace( $search, $replace, $text );

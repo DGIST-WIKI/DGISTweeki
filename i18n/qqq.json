@@ -28,7 +28,7 @@
 	"tweeki-footer-standard-btnclass": "",
 	"tweeki-footer-standard-wrapper": "",
 	"tweeki-footer-standard-wrapperclass": "",
-	"tweeki-toolbox": "Custom link content for toolbox dropdown. (you can also use an icon, e.g. <code><nowiki><span class='glyphicon glyphicon-cog'></span></nowiki></code>)",
+	"tweeki-toolbox": "Custom link content for toolbox dropdown. (you can also use an icon, e.g. <code><nowiki><span class='glyphicon glyphicon-pencil'></span></nowiki></code>)",
 	"tweeki-login": "Text used for the login link.",
 	"tweeki-edit-ext": "Text for the EDIT-EXT button",
 	"tweeki-container-class": "Should be one of 'container' or 'container-fluid'. This class is used for the navbar, the main content and the footer.",
