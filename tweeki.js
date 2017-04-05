@@ -46,21 +46,21 @@ jQuery( function( $ ) {
 		var ispre = true;
 		var $postsections = [];
 		var $thisSection;
-		$( "#textbook-sections" ).children().each(function( index ) {
-			if (ispre) {
-				if ($( this ).data('thissection') === true) {
-					ispre = false;
-					$thisSection = '<li>' + $( this ).text() + '</li>';
-				} else {
-					$presections.push('<li><a href="/index.php/'+ $( this ).text() + '">' + $( this ).text() + '</a></li>');
-				}
-			} else {
-				$postsections.push('<li><a href="/index.php/'+ $( this ).text() + '">' + $( this ).text() + '</a></li>');
-			}
-		});
-		$( "#toc>ul" ).prepend($thisSection);
-		$( "#toc>ul" ).prepend($presections);
-		$( "#toc>ul" ).append($postsections);
+		// $( "#textbook-sections" ).children().each(function( index ) {
+		// 	if (ispre) {
+		// 		if ($( this ).data('thissection') === true) {
+		// 			ispre = false;
+		// 			$thisSection = '<li>' + $( this ).text() + '</li>';
+		// 		} else {
+		// 			$presections.push('<li><a href="' + mw.config.get('wgScript') + '/' + $( this ).text() + '">' + $( this ).text() + '</a></li>');
+		// 		}
+		// 	} else {
+		// 		$postsections.push('<li><a href="' + mw.config.get('wgScript') + '/' + $( this ).text() + '">' + $( this ).text() + '</a></li>');
+		// 	}
+		// });
+		// $( "#toc>ul" ).prepend($thisSection);
+		// $( "#toc>ul" ).prepend($presections);
+		// $( "#toc>ul" ).append($postsections);
 		// to other place than sidebar?
 		if ( $( "#tweekiTOC" ).parents( ".sidebar-wrapper" ).length != 1 ) {
 			$( "#toc li" ).appendTo( "#tweekiTOC" );

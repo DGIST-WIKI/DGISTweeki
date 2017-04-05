@@ -1133,6 +1133,7 @@ class TweekiTemplate extends BaseTemplate
 		echo '<div class="tweekiFirstHeading">' . $skin->data[ 'title_formatted' ] . '</div>';
 	}
 
+
 	/**
 	 * Render TOC
 	 */
@@ -1148,10 +1149,11 @@ class TweekiTemplate extends BaseTemplate
 			__METHOD__,
 			array()
 		);
+		$toc = '';
 		if ($sectionInfo) {
 			$bookInfo = $dbr->select(
         array( 'textbook', 'textbook_section' ),
-        array( 'txb_title', 'txbsec_title' ),
+        array( 'txb_title', 'txbsec_title', 'txbsec_section_info' ),
         array(
 					'txb_id' => $sectionInfo->txbsec_textbook,
 					'txb_id = txbsec_textbook'
@@ -1159,38 +1161,22 @@ class TweekiTemplate extends BaseTemplate
         __METHOD__,
       	array()
       );
-			echo '<div id="textbook-sections" hidden>';
 			foreach ($bookInfo as $sect) {
-				if ($skin->getSkin()->getTitle() == $sect->txbsec_title) {
-					echo '<div data-thissection="true">'.$sect->txbsec_title.'</div>';
-				} else {
-					echo '<div data-thissection="false">'.$sect->txbsec_title.'</div>';
+				$toc .= '<li class="toclevel-0">' . $sect->txbsec_title;
+				if ($sect->txbsec_section_info) {
+					$subsections = json_decode($sect->txbsec_section_info, true);
+					echo htmlspecialchars(Linker::generateTOC($subsections));
+					$toc .= Linker::generateTOC($subsections);
 				}
+				$toc .= '</li>';
 			}
-			echo '</div>';
 		} else {
-			// $bookInfo = $dbr->select(
-      //   array( 'textbook', 'textbook_section' ),
-      //   array( 'txb_title', 'txbsec_title' ),
-      //   array(
-			// 		'txb_page' => $skin->getSkin()->getTitle()->getArticleId(),
-			// 		'txb_id = txbsec_textbook'
-			//  	),
-      //   __METHOD__,
-      // 	array()
-      // );
-			// if ($bookInfo->numRows()) {
-			// 	echo '<div id="textbook-sections">';
-			// 	foreach ($bookInfo as $sect) {
-			// 		echo '<div data-thissection="false">'.$sect->txbsec_title.'</div>';
-			// 	}
-			// 	echo '</div>';
-			// }
+			// $toc = wfMessage( 'Toc' )->text();
 		}
 		if ( $context == 'sidebar-left' || $context == 'sidebar-right' ) {
 			echo '<div id="tweekiTOC"></div>';
 		}	else {
-			echo '<li class="nav dropdown" id="tweekiDropdownTOC"><a id="n-toc" class="dropdown-toggle" data-toggle="dropdown" href="#">' . wfMessage( 'Toc' )->text() . '<span class="caret"></span></a><ul class="dropdown-menu pull-right" role="menu" id="tweekiTOC"><li><a href="#">' . wfMessage( 'tweeki-toc-top' )->text() . '</a></li><li class="divider"></li></ul></li>';
+			echo '<li class="nav dropdown" id="tweekiDropdownTOC"><a id="n-toc" class="dropdown-toggle" data-toggle="dropdown" href="#">' . $toc . '<span class="caret"></span></a><ul class="dropdown-menu pull-right" role="menu" id="tweekiTOC"><li><a href="#">' . wfMessage( 'tweeki-toc-top' )->text() . '</a></li><li class="divider"></li></ul></li>';
 		}
 	}
 
